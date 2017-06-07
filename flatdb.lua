@@ -1,23 +1,12 @@
 local mp = require("MessagePack")
+local lfs = require "lfs"
 
 local function isFile(path)
-	local f = io.open(path, "r")
-	if f then
-		f:close()
-		return true
-	end
-	return false
+	return lfs.attributes(path, "mode") == "file"
 end
 
 local function isDir(path)
-	local tmp = path.."/"..os.tmpname()
-	local f = io.open(tmp, "w")
-	if f then
-		f:close()
-		os.remove(tmp)
-		return true
-	end
-	return false
+	return lfs.attributes(path, "mode") == "directory"
 end
 
 local function load_page(path)
