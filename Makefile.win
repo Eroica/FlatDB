@@ -1,0 +1,31 @@
+T= sfs
+
+# Lua includes directory
+LUA_INC= "C:\lua-5.3.4"
+# Lua library
+LUA_LIB= "C:\lua-5.3.4\lua5.3.lib"
+
+# Windows library
+WIN_LIBS = "Shlwapi.lib"
+
+LIBNAME= $T.dll
+
+# Compilation directives
+WARN= /O2
+INCS= /I$(LUA_INC)
+CFLAGS= /MD $(WARN) $(INCS)
+CC= cl
+
+SRCS= $T.c
+OBJS= $T.obj
+
+lib: sfs.dll
+
+.c.obj:
+	$(CC) /c /Fo$@ $(CFLAGS) $<
+
+sfs.dll: $(OBJS)
+	link /dll /out:sfs.dll $(OBJS) "$(LUA_LIB)" "$(WIN_LIBS)"
+
+clean:
+	del sfs.dll $(OBJS) $T.lib $T.exp
